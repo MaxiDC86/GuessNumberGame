@@ -15,11 +15,12 @@ function GameOverScreen({ roundsNumber, userNumber, onStartNewGame }) {
       </View>
       <View>
         <Text style={styles.summaryText}>
-          Your phone needed <Text style={styles.highlight}>X</Text> round to
-          guess your number <Text style={styles.highlight}>Y</Text>
+          Your phone needed <Text style={styles.highlight}>{roundsNumber}</Text>{" "}
+          rounds to guess your number{" "}
+          <Text style={styles.highlight}>{userNumber}</Text>
         </Text>
       </View>
-      <PrimaryButton> START NEW GAME</PrimaryButton>
+      <PrimaryButton onPress={onStartNewGame}> START NEW GAME</PrimaryButton>
     </View>
   );
 }

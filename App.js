@@ -6,13 +6,13 @@ import GameScreen from "./screens/GameScreen";
 import Colors from "./constants/colors";
 import GameOverScreen from "./screens/GameOverScreen";
 import { useFonts } from "expo-font";
-
 import * as SplashScreen from "expo-splash-screen";
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [userNumber, setUserNumber] = useState();
   const [gameIsOver, setGameIsOver] = useState(true);
+  const [roundsNumber, setRoundsNumber] = useState(1);
 
   useFonts({
     "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
@@ -35,7 +35,6 @@ export default function App() {
         setAppIsReady(true);
       }
     }
-
     prepare();
   }, []);
 
@@ -58,19 +57,37 @@ export default function App() {
     setUserNumber(pickedNumber);
     setGameIsOver(false);
   }
-
   function gameOverHandler() {
     setGameIsOver(true);
   }
+  function roundsHandler() {
+    setRoundsNumber(roundsNumber + 1);
+  }
+
   let screen = <StartGameScreen onPickedNumber={pickedNumberHandler} />;
 
   if (userNumber) {
     screen = (
-      <GameScreen userNumber={userNumber} onGameOver={gameOverHandler} />
+      <GameScreen
+        userNumber={userNumber}
+        onGameOver={gameOverHandler}
+        roundsHandler={roundsHandler}
+      />
     );
   }
   if (gameIsOver && userNumber) {
-    screen = <GameOverScreen />;
+    screen = (
+      <GameOverScreen
+        userNumber={userNumber}
+        roundsNumber={roundsNumber}
+        onStartNewGame={onStartNewGame}
+      />
+    );
+  }
+  function onStartNewGame() {
+    setUserNumber(null);
+    setGameIsOver(false);
+    setRoundsNumber(1);
   }
 
   return (

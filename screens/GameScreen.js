@@ -19,7 +19,7 @@ function generateRandomBetween(min, max, exclude) {
 let minBoundary = 1;
 let maxBoundary = 100;
 
-function GameScreen({ userNumber, onGameOver }) {
+function GameScreen({ userNumber, roundsHandler, onGameOver }) {
   const initialGuess = generateRandomBetween(1, 100, userNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
 
@@ -28,6 +28,11 @@ function GameScreen({ userNumber, onGameOver }) {
       onGameOver();
     }
   }, [currentGuess, userNumber, onGameOver]);
+
+  useEffect(() => {
+    minBoundary = 1;
+    maxBoundary = 100;
+  }, []);
 
   function nextGuessHandler(direction) {
     //direction => lower or higher
@@ -50,6 +55,7 @@ function GameScreen({ userNumber, onGameOver }) {
       maxBoundary,
       currentGuess
     );
+    roundsHandler();
     setCurrentGuess(newRandomNumber);
   }
 
